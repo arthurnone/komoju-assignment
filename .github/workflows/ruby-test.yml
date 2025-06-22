@@ -1,0 +1,69 @@
+name: Ruby Tests
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  test:
+    name: Run Ruby Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        ruby-version: ['3.3']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby ${{ matrix.ruby-version }}
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+    
+    - name: Create Gemfile
+      run: |
+        cd ruby
+        cat > Gemfile << 'EOF'
+        source 'https://rubygems.org'
+        
+        gem 'rspec', '~> 3.13'
+        gem 'simplecov', '~> 0.22'
+        EOF
+    
+    - name: Install dependencies
+      run: |
+        cd ruby
+        bundle install
+    
+    - name: Create spec_helper
+      run: |
+        cd ruby
+        cat > spec_helper.rb << 'EOF'
+        require 'simplecov'
+        SimpleCov.start do
+          add_filter '/spec/'
+        end
+        EOF
+    
+    - name: Update test file to include coverage
+      run: |
+        cd ruby
+        cat > temp_spec.rb << 'EOF'
+        require_relative 'spec_helper'
+        EOF
+        cat gilded_rose_spec.rb >> temp_spec.rb
+        mv temp_spec.rb gilded_rose_spec.rb
+    
+    - name: Run RSpec tests
+      run: |
+        cd ruby
+        bundle exec rspec gilded_rose_spec.rb --format documentation
+    
+    - name: Show application logs
+      run: |
+        cd ruby
+        echo "=== Application Logs ==="
+        cat komoju_assignment.log || echo "No log file found"
+
