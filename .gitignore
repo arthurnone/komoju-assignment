@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.venv
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.log
+
+# Ruby
+*.gem
+*.rbc
+.bundle/
+log/
+tmp/
+*.log
+*.pid
+*.pid.lock
+vendor/bundle/
+.yardoc/
+.rvmrc
+.ruby-version
+.ruby-gemset
+coverage/
+
+# log
+*.log
